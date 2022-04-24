@@ -1,0 +1,491 @@
+Zoom Login - https://neo4j.zoom.us/j/94681759405
+"attendee23" (without the quotes) and your password is "1$EOWYHGAF" (idem).
+
+Drive - https://message.neo4j.com/NzEwLVJSQy0zMzUAAAF_P5L-VL3RdewMS0SRHYHcE3gJTN0tUmdujuNL21PebAm6-3FWvyBKITjzLYZDMnNB6MH-0aA=
+
+Slido https://app.sli.do/event/evjqbggl
+
+
+https://gdstest.tomgeudens.io:7473/browser/
+:play https://metis.tomgeudens.io/gdstest
+:play https://metis.tomgeudens.io/gdstraining
+
+Local DB - neo4j/Neo4j
+
+:play https://metis.tomgeudens.io/gdstraining/intro.html
+https://bit.ly/neo4j-gds-intro
+
+
+bin\neo4j-admin load --from=C:\documents\techie\neo4j\training\practical-neo4j\data\gds_gameofthrones.dump --database=gameofthrones 
+bin\neo4j-admin load --from=C:\documents\techie\neo4j\training\practical-neo4j\data\gds_paysim.dump --database=paysim
+
+.\neo4j-admin.ps1 load --from=C:\documents\techie\neo4j\training\practical-neo4j\data\gds_gameofthrones.dump --database=gameofthrones
+
+.\neo4j-admin.ps1 load --from=C:\documents\techie\neo4j\training\practical-neo4j\data\gds_paysim.dump --database=paysim
+
+.\cypher-shell.bat -u neo4j -p secret -d system "CREATE DATABASE gameofthrones;"
+
+.\cypher-shell.bat -u neo4j -p secret -d system "CREATE DATABASE paysim;"
+
+install plugins of apoc and gds, bloom and adjust config - dbms.security.procedures.unrestricted=my.extensions.example,my.procedures.*,gds.*,apoc.*
+restart
+.\cypher-shell.bat -u neo4j -p secret -d system "RETURN apoc.version();"
+
+
+One way of getting a summary of the node labels
+match (n) return labels(n), count(*)
+
+match(x) return x
+
+match(z:House) return z
+match(z:Person:King:Dead) return z
+
+Now run with Disabling Settings/Connect result nodes
+
+which houses are present in which battles
+match (x:House) - [] - (y:Battle) return x.name, y.name
+
+MATCH (x:House)-[y:ATTACKER]->(z:Battle)
+RETURN x,y,z 
+LIMIT 30;
+
+
+
+
+From Stetco, Adrian to Everyone:  05:38 PM
+a cool tutorial on t-sne: https://distill.pub/2016/misread-tsne/
+From Tan, Zhencheng to Everyone:  05:47 PM
+Using the ‘with’ from driver, I remember it will close automatically,  will it?
+From dapeng to Everyone:  05:52 PM
+can you create a graph using adjacency matrix, and retrieve adjacency matrix?
+thank you
+
+Neo4j Graph Data Science Configuration Guide https://neo4j.com/whitepapers/graph-data-science-configuration-guide/
+
+Amar, you can write to the underlying database but you’re not able to write back to the leader and thus the rest of the cluster.  This functionality is currently being tested internally.
+
+
+:play https://metis.tomgeudens.io/gdstraining/fraud.html
+https://bit.ly/neo4j-gds-fraud
+
+stay in touch on LinkedIn or joe@neo4j.com!
+
+A trick in the browser. “:style reset” will assign new colors and try to pick properties to display (in case you get many gray/blank nodes displayed)
+
+
+DB_ULR = "neo4j+s://gdstest.tomgeudens.io:7687"
+DB_USER = "attendee23"
+DB_PASS = "1$EOWYHGAF"
+DB_NAME = "paysim"
+DB_ENCRYPTED = False
+
+DB_ULR = "neo4j://localhost:7687"
+DB_USER = "neo4j"
+DB_PASS = "Neo4j"
+DB_NAME = "paysim"
+DB_ENCRYPTED = False
+
+
+MATCH (x:House)-[a:ATTACKER]->(z:Battle)
+RETURN x,a,z 
+LIMIT 30;
+
+Match res=(:House)-[:ATTACKER]->(:Battle)
+return res
+
+
+MATCH (x:House)-[]->(y:Battle)
+RETURN x.name, collect(distinct y.name);
+
+
+MATCH (x:House)-[:ATTACKER]->(y:Battle)
+WHERE (x)-[:DEFENDER]->(y)
+RETURN x.name, y.name
+
+MATCH (x:House)-[y:ATTACKER AND DEFENDER]->(z:Battle)
+
+create (testnode {name:apoc.create.uuid()}) - correct it
+
+call apoc.help("help")
+
+profile 
+MATCH (x:House {name:"Darry"})-[y:DEFENDER]->(z:Battle)
+RETURN x,y,z;
+
+#############################
+Quetion - 1
+#############################
+Implicit Aggregation - How big is the household of "Brotherhood Without Banners"
+soln: MATCH (x:Person)-[:BELONGS_TO]->(y:House) where y.name="Brotherhood Without Banners"
+RETURN y, count(*) as num_households
+
+MATCH (x:Person)-[:BELONGS_TO]->(y:House {name:"Brotherhood Without Banners"}) 
+RETURN y, count(*) as num_households
+#############################
+
+https://tbgraph.wordpress.com/2017/06/24/neo4j-game-of-thrones-part-1/
+
+
+:play https://metis.tomgeudens.io/dscmodeling.html
+:play https://metis.tomgeudens.io/gdstraining/catalog.html
+https://bit.ly/neo4j-gds-catalog
+https://neo4j.com/docs/graph-data-science/current/algorithms/page-rank/
+
+
+match p=() - r[r:'__ALL__']
+
+CALL gds.graph.create(
+  "gds-interaction-natural",
+  "Person",
+  "INTERACTS"
+) YIELD graphName, nodeCount, relationshipCount
+RETURN *;
+
+CALL gds.graph.create(
+  "gds-interaction-undirected",
+  "Person", {
+    INTERACTS: {
+      type: 'INTERACTS',
+      orientation: 'UNDIRECTED'
+    }
+  }
+) YIELD graphName, nodeCount, relationshipCount
+RETURN *;
+
+
+https://stackoverflow.com/questions/60009218/an-efficient-way-to-store-metadata-in-neo4j
+
+Neo4j Aura Enterprise Graph Database-as-a-Service - https://aws.amazon.com/marketplace/pp/prodview-delmyam4ns2nm
+Gartner - Top Trends in Data and Analytics for 2021: https://neo4j.com/whitepapers/gartner-top-trends-data-analytics/
+The Forrester Wave™: Graph Data Platforms, Q4 2020 - https://neo4j.com/whitepapers/forrester-wave-graph-data-platforms/
+Maximizing the Value of Your Data with Graph Data Platforms by IDC - https://neo4j.com/whitepapers/maximizing-the-value-of-your-data-with-graph-data-platforms/
+Aura Enterprise Now on AWS: Bringing the Leading Graph Platform to the Leading Cloud Platform - https://neo4j.com/blog/aura-enterprise-on-aws-bringing-leading-graph-platform-to-leading-cloud-platform/
+Tourism Media Automates Travel Content Generation with Neo4j Aura on AWS for an 8x Increase in Productivity - https://neo4j.com/users/tourism-media/
+THE FASTEST PATH TO GRAPH Neo4j Aura Neo4j’s fully managed cloud service: The zero-admin, always-on graph database for cloud developers. - https://neo4j.com/cloud/aura/?ref=home
+Introducing Neo4j Aura Enterprise - https://youtu.be/ByXfqPIPfQI
+You may like to explore our FREE courses, certifications and book as well as software:- Courses & Certifications https://neo4j.com/GraphAcademy Free books https://neo4j.com/books/ Software https://neo4j.com/download-center/
+
+
+Day-2 - 10-Sep-2021
+:play https://metis.tomgeudens.io/gdstraining/catalog.html
+https://bit.ly/neo4j-gds-catalog
+
+match p=()-[r:BELONGS_TO] ->()  return p limit 25
+
+how node similarity is implemented: https://neo4j.com/docs/graph-data-science/current/algorithms/node-similarity/
+The input of this algorithm is a bipartite, connected graph containing two disjoint node sets. Each relationship starts from a node in the first node set and ends at a node in the second node set.
+The Node Similarity algorithm compares each node that has outgoing relationships with each other such node.
+Direction of the relationships is important to think about for all algorithms, just as we saw yesterday with page rank for John Snow.
+
+
+:play https://metis.tomgeudens.io/datascienceclass/index.html
+
+:play https://metis.tomgeudens.io/datascienceclass/pagerank.html
+
+
+###################################
+CALL gds.pageRank.stream('got-interactions') YIELD nodeId, score
+RETURN gds.util.asNode(nodeId).name AS name, score
+ORDER BY score DESC LIMIT 10
+
+
+CALL gds.pageRank.stream('got-interactions') YIELD nodeId, score AS pageRank
+WITH gds.util.asNode(nodeId) AS n, pageRank
+MATCH (n)-[i:INTERACTS]-()
+RETURN n.name AS name, pageRank, count(i) AS interactions
+ORDER BY pageRank DESC LIMIT 10
+
+What kind of interactions did we take into accounts?  Battles or house/knight/king connections?
+In the mono partite projection we used Person nodes and INTERACTS relationships.
+So INTERACTS is a person to person relationship.
+
+This interaction graph is based of this : https://networkofthrones.wordpress.com/
+
+For a small delta, I guess you could also approximate the page rank of a new node introduced, with cypher.
+
+
+after write propery - can see pageRank property in Person node
+match (p:Person {name: 'Jon Snow'}) return p
+
+match (p:Person) return p.name, p.pageRank1, p.pageRank5, p.pageRank5 - p.pageRank1 as difference order by difference desc limit 10
+
+if the interaction between books result in different graph, can we compare page rank score?
+
+Yes because the elements that go into it are the same. It's not a completely different graph, it is the same people interacting.
+The numbers are not random, but you do need to compare apples to apples. Good observation though!
+
+But it is for an unweighted graph, so most def number of “hops” if you thing of it as number of relationships or number of nodes along the shortest path does not really matter.
+
+###################################
+
+:play https://metis.tomgeudens.io//datascienceclass/labelpropagation.html
+
+
+Label Propagation Algo (LPA) 
+how is accuracy computed? modularity score?
+LPA reaches convergence when each node has the majority label of its neighbours.
+LPA stops if either convergence, or the user-defined maximum number of iterations is achieved.
+
+From Håkan Löfqvist to Everyone:  01:58 PM
+I don’t think you can estimate how 
+From Tom Geudens (Neo4j) to Everyone:  01:59 PM
+Most iterative algorithms have "convergence" point (which for some algorithms is not Always the same on each run - unless you seed) but as Hakan points out an estimation of how close you are is not determinable (as far as I know)
+From Håkan Löfqvist to Everyone:  02:00 PM
+Stats mode is helpful, to quickly figure out if you need to tune some parameters.
+CALL gds.labelPropagation.stats('myGraph')
+YIELD communityCount, ranIterations, didConverge
+From that, you can quickly see if you should increase maxIterations.
+
+
+CALL gds.labelPropagation.stats(
+  'got-interactions-weighted',
+  {
+    relationshipWeightProperty: 'weight',
+    maxIterations: 1000
+  }
+)
+
+
+Seeding
+:play https://metis.tomgeudens.io//datascienceclass/wcc.html
+
+
+CALL gds.wcc.stream('got-interactions-weighted', {relationshipWeightProperty: 'weight'})
+YIELD nodeId, componentId
+RETURN componentId as component, count(nodeId) AS size
+ORDER BY size DESC
+
+CALL gds.wcc.stream('got-interactions-weighted', {relationshipWeightProperty: 'weight', threshold: 3})
+YIELD nodeId, componentId
+RETURN componentId as component, count(nodeId) AS size
+ORDER BY size DESC LIMIT 10
+
+CALL gds.wcc.stream('got-culture-interactions-cypher')
+YIELD nodeId, componentId
+RETURN componentId as component, count(nodeId) AS size
+ORDER BY size DESC LIMIT 10
+
+
+CALL gds.wcc.write('got-culture-interactions-cypher', {writeProperty: 'wcc_partition'})
+
+From Sergey Z to Everyone:  02:29 PM
+Can we use such algorithms for multipartite graphs? (i.e. also include battles as type of interactions between people)
+From Tom Geudens (Neo4j) to Everyone:  02:30 PM
+Yes, but only if you include it into a monopartite projection.
+From Håkan Löfqvist to Everyone:  02:31 PM
+But then again, what would the answer mean? Culture battle communities? It may be that HITS or another algorithm would be better, where nodes can be put into multiple communities.
+“Yes, but only if you include it into a monopartite projection.”
+
+From Sergey Z to Everyone:  02:38 PM
+Got it, we can use such algorithm only with monopartite projections. 1 more q please - do we take into account the frequency of interactions in this mono partite graph or only a fact/link of the  interaction?
+From Håkan Löfqvist to Everyone:  02:39 PM
+Remember the relationship projection was MATCH (p1:Person)-[:MEMBER_OF_CULTURE]->(c:Culture)<-[:MEMBER_OF_CULTURE]-(p2:Person)
+Shared culture.
+From Tom Geudens (Neo4j) to Everyone:  02:39 PM
+You can do both. That's what the aggregation in the projection can be used for. You can give the link weight that way (or ignore multiple links entirely)
+
+For the "specialists" on the subject (pre-empting a question). We don't have the Leiden variant yet. Engineering is working on that (and you could try your own hand at it using the Neo4j Pregel API).
+
+
+louvain
+:play https://metis.tomgeudens.io//datascienceclass/louvain.html
+
+CALL gds.louvain.stream(
+  'got-interactions',
+  {
+    includeIntermediateCommunities: true
+  }
+)
+YIELD nodeId, intermediateCommunityIds
+RETURN count(distinct intermediateCommunityIds[0]), count(distinct intermediateCommunityIds[1]), count(distinct intermediateCommunityIds[2])
+
+
+CALL gds.louvain.write(
+  'got-interactions',
+  {
+    includeIntermediateCommunities: true,
+    writeProperty: 'louvainCommunity'
+  }
+)
+
+
+CALL gds.louvain.stats(
+  graphName: String,
+  configuration: Map
+)
+YIELD
+  createMillis: Integer,
+  computeMillis: Integer,
+  postProcessingMillis: Integer,
+  communityCount: Integer,
+  ranLevels: Integer,
+  modularity: Float,
+  modularities: Integer[],
+  communityDistribution: Map,
+  configuration: Map
+
+https://neo4j.com/docs/graph-data-science/current/algorithms/louvain/
+
+Yes, or type in :clear to close all result frames.
+You can also change the max result frames setting from the settings menu (cogwheel on the lower left hand).
+You can also change the max result frames setting from the settings menu (cogwheel on the lower left hand).
+
+MATCH (p1:Person), (p2:Person)
+WHERE p1 <> p2
+AND p1.louvainCommunity[0] <> p2.louvainCommunity[0]
+AND p1.louvainCommunity[1] = p2.louvainCommunity[1]
+RETURN p1.name, p1.louvainCommunity, p2.name, p2.louvainCommunity
+LIMIT 10
+
+
+GDS - Part-2
+:play https://metis.tomgeudens.io/gdstraining/similarity.html
+https://bit.ly/neo4j-gds-similarity
+
+
+MATCH (gc:Person {name: "Gregor Clegane"})-[]->(gcconnect)
+WHERE gcconnect:Book OR gcconnect:House OR gcconnect:Culture OR gcconnect:Person
+WITH collect(DISTINCT id(gcconnect)) AS gclist
+MATCH (ip:Person {name: "Ilyn Payne"})-[]->(ipconnect)
+WHERE ipconnect:Book OR ipconnect:House OR ipconnect:Culture OR ipconnect:Person
+WITH gclist, collect(DISTINCT id(ipconnect)) AS iplist
+RETURN gds.alpha.similarity.jaccard(iplist, gclist)
+
+does nodeSimilarity use the alpha rated function jaccard under the hood then?
+From Håkan Löfqvist to Everyone:  03:20 PM
+From a logical perspective yes. From an implementation perspective, idk.
+
+https://neo4j.com/docs/graph-data-science/current/algorithms/node-similarity/
+What I mean by that, it clearly uses Jaccard Similarity.
+
+I think of it as nodeSimilarity = has the strategy in it for running Jaccard on a larger graph (as compared to only two nodes as Tom showed).
+From Paritosh Sharma to Everyone:  03:29 PM
+In case we need to find out nodes 
+From Jose Ibañez Vela to Everyone:  03:30 PM
+How to know if a query is high cpu intensive or not ?
+From Andreas Säterås to Everyone:  03:31 PM
+Yout could use jaccard to compare texts as well 
+return gds.alpha.similarity.jaccard(apoc.text.bytes("text1"),apoc.text.bytes("text2"))
+From Håkan Löfqvist to Everyone:  03:34 PM
++1 Andreas!
+If an algorithm takes forever, first thing to check is usually memory. Run estimate.
+After you have established that you have enough memory, then look at the logs for progress and also monitor memory usages and gc times to make sure cpu is crushing through the algorithm as fast as it possible can.
+From Joe D. (he/him) to Everyone:  03:35 PM
+I think Node Similarity can be ‘graph’ when you are working with a cypher projection to condense longer paths into a bi-partite view .. so not direct connections, but longer patterns or wider graph views.
+
+
+Path Finding
+:play https://metis.tomgeudens.io/gdstraining/path.html
+https://bit.ly/neo4j-gds-path
+
+MATCH (start:Person{name:'Gormon Tyrell'}),(end:Person{name:'Manfrey Martell'})
+CALL gds.shortestPath.dijkstra.stream({
+  nodeProjection: 'Person',
+  relationshipProjection: {
+    INTERACTS_SEASON4: {type: 'INTERACTS_4', orientation: 'UNDIRECTED'}},
+  sourceNode: id(start),
+  targetNode: id(end)}) YIELD totalCost, nodeIds, path
+RETURN path,nodeIds,totalCost, length(path), size(nodeIds)
+From Tan, Zhencheng to Everyone:  03:44 PM
+Could it show the real relationship instead of path_0?
+From Lyne, Richard (ELS-LON) to Everyone:  03:46 PM
+Sorry, clicked on the queries on pages 4,5 rather than 3,4
+From Sergey Z to Everyone:  03:46 PM
+Could you please remind what is 'INTERACTS_4'?
+From Bhanu Bommidi to Everyone:  03:46 PM
+Interacts_4 is based on Book 4
+
+Negative costs lead to infinite loops
+
+Linked Predictions
+CALL db.relationshipTypes()
+YIELD relationshipType as book
+WITH book WHERE book STARTS WITH 'INTERACTS_'
+MATCH (n1:Person{name:'Daenerys Targaryen'})
+MATCH (n2:Person{name:'Jon Snow'})
+RETURN
+  gds.alpha.linkprediction.commonNeighbors(n1, n2, {relationshipQuery:book}) AS cn_score,
+  gds.alpha.linkprediction.preferentialAttachment(n1, n2, {relationshipQuery:book}) AS pa_score,
+  gds.alpha.linkprediction.adamicAdar(n1, n2, {relationshipQuery:book}) AS aa_score,
+  gds.alpha.linkprediction.resourceAllocation(n1, n2, {relationshipQuery:book}) AS ra_score,
+  gds.alpha.linkprediction.totalNeighbors(n1, n2, {relationshipQuery:book}) AS tn_score,
+  book
+
+
+Auxiliary
+:play https://metis.tomgeudens.io/gdstraining/auxiliary.html
+https://bit.ly/neo4j-gds-aux
+
+
+https://github.com/lqst/notebooks/blob/main/paysim-demo.ipynb
+
+Which Culture component has the most members?
+
+MATCH (c:Culture)<-[:MEMBER_OF_CULTURE]-(p:Person)
+RETURN c.name, p.wcc_partition, count(p) as members ORDER BY members desc limit 10
+
+################
+
+From Sergey Z to Everyone:  04:06 PM
+Still don’t understand how can the score be 0 given they interacted with each other
+From Lyne, Richard (ELS-LON) to Everyone:  04:06 PM
+Can you put the query in the chat?
+thanks
+From Tom Geudens (Neo4j) to Everyone:  04:07 PM
+CALL db.relationshipTypes()
+YIELD relationshipType as book
+WITH book WHERE book STARTS WITH 'INTERACTS_'
+MATCH (n1:Person{name:'Daenerys Targaryen'})
+MATCH (n2:Person{name:'Jon Snow'})
+RETURN
+  gds.alpha.linkprediction.commonNeighbors(n1, n2, {relationshipQuery:book}) AS cn_score,
+  gds.alpha.linkprediction.preferentialAttachment(n1, n2, {relationshipQuery:book}) AS pa_score,
+  gds.alpha.linkprediction.adamicAdar(n1, n2, {relationshipQuery:book}) AS aa_score,
+  gds.alpha.linkprediction.resourceAllocation(n1, n2, {relationshipQuery:book}) AS ra_score,
+  gds.alpha.linkprediction.totalNeighbors(n1, n2, {relationshipQuery:book}) AS tn_score,
+  book
+:play https://metis.tomgeudens.io/gdstraining/auxiliary.html
+https://bit.ly/neo4j-gds-aux
+From Sergey Z to Everyone:  04:23 PM
+Yes
+From Matthew.Reggler@Sophos.com to Everyone:  04:23 PM
+yep
+From Håkan Löfqvist to Everyone:  04:23 PM
+40 minutes lunch break ok?
+From Sebastian Schlesinger to Everyone:  04:23 PM
+ok
+From João Lopes to Everyone:  04:23 PM
+can you repeat pls?
+From Tom Geudens (Neo4j) to Everyone:  04:24 PM
+Lunch until 12h30 BST, 13h30 CEST
+From Joe D. (he/him) to Everyone:  04:24 PM
+Have a nice lunch everyone! 😋
+From Håkan Löfqvist to Everyone:  05:11 PM
+https://github.com/lqst/notebooks/blob/main/paysim-demo.ipynb
+From Andre Afonso to Everyone:  05:16 PM
+why you use apoc.cypher.run instead of just return the result ?
+From Tom Geudens (Neo4j) to Everyone:  05:18 PM
+Hakan is running a subquery there that does an aggregation.
+From Andre Afonso to Everyone:  05:20 PM
+so is faster in this way ?
+ok thank you :)
+From Sergey Z to Everyone:  05:28 PM
+Roughly speaking, we have done:
+1) label propagation, 2) clustering, 3) share of fraud by clusters right?
+From Stetco, Adrian to Everyone:  05:38 PM
+a cool tutorial on t-sne: https://distill.pub/2016/misread-tsne/
+From Tan, Zhencheng to Everyone:  05:47 PM
+Using the ‘with’ from driver, I remember it will close automatically,  will it?
+From dapeng to Everyone:  05:52 PM
+can you create a graph using adjacency matrix, and retrieve adjacency matrix?
+thank you
+
+
+
+Neo4j Graph Data Science Configuration Guide https://neo4j.com/whitepapers/graph-data-science-configuration-guide/
+
+
+
+#########################
+https://www.youtube.com/watch?v=3VHgmB0SPxQ - Creating nodes and relationships in Neo4j
+https://www.youtube.com/watch?v=Eh_79goBRUk - Using LOAD CSV in the Real World | Nicole White, Data Scientist, Neo4j
