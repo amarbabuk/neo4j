@@ -480,6 +480,8 @@ From dapeng to Everyone:  05:52 PM
 can you create a graph using adjacency matrix, and retrieve adjacency matrix?
 thank you
 
+1kgdsGjCSBnpv1_NtMvZ-Q7cmwNn3FUbcXOqIo7fdu4
+
 
 
 Neo4j Graph Data Science Configuration Guide https://neo4j.com/whitepapers/graph-data-science-configuration-guide/
